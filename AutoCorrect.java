@@ -109,7 +109,7 @@ public class AutoCorrect {
 
         String temp, temp2, temp3, temp4; 
         suggestionCount = 0;
-        for(int i = 0; i < suggestionsArr.length -1; i++)  suggestionsArr[i] = ""; //initialize every index to an empty string
+        for(int i = 0; i < suggestionsArr.length -1; i++)  suggestionsArr[i] = " "; //initialize every index to an empty string
 
         /**
          * this loop exectutes until there are at most three different suggested words. If one of the functions returns null to the temp variable then 
@@ -143,7 +143,7 @@ public class AutoCorrect {
     //helper function for suggestions(...)
     public void noSuggestions(String temp, String temp2, String temp3, String temp4, String key){
         if (temp == null && temp2 == null && temp3 == null && temp4 == null) {
-            suggestionsArr[suggestionCount] = "NO SUGGESTIONS FOUND FOR '" + key + "'";
+            suggestionsArr[suggestionCount] = "NO OTHER SUGGESTIONS FOUND";
             for(int i = 1; i < suggestionCount; i++) 
                 suggestionsArr[i] = "";
             
