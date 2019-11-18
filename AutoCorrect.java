@@ -13,6 +13,7 @@ public class AutoCorrect {
 
 
     public static void createTree(int fileType){
+        int length = 0; 
         //if user has an internet connection this try-catch should run; pulling the dictionary directly from github
         try {
             URL url = new URL("https://raw.githubusercontent.com/magsilva/jazzy/master/resource/dict/english.0");
@@ -24,15 +25,28 @@ public class AutoCorrect {
                     }
                 }else{
                     if(sc.nextLine().length() == 0) {
-                        st.insert(sc.nextLine().toLowerCase());
+                        // st.insert(sc.nextLine().toLowerCase());
+                        length++;
                     }
                 }
             }
+            Scanner r = new Scanner(url.openStream());
+            String[] dict = new String[length];
+            int i = 0; 
+            while(r.hasNext() && i < length){
+                if(r.nextLine().length() == 0){
+                    dict[i++] = r.nextLine().toLowerCase(); 
+                }
+            }
+            addBST(dict);
+            r.close();
             sc.close();
+        
         } catch (IOException e) { 
+            length = 0; 
             try{ //if user doesn't have internet connection this try-catch should run; pulling the dictionary directly from their directory
                 String filePath = new File("").getAbsolutePath(); 
-                filePath = filePath.concat("/english0.txt"); 
+                filePath = filePath.concat("/english.0.txt"); 
                 File file = new File(filePath); 
                 Scanner sc = new Scanner(file);
                 while (sc.hasNext()) {
@@ -42,10 +56,22 @@ public class AutoCorrect {
                         }
                     }else{
                         if (sc.nextLine().length() == 0) {
-                            st.insert(sc.nextLine().toLowerCase());
+                            // st.insert(sc.nextLine().toLowerCase());
+                            length++;
                         }
                     }
                 }
+            //this is used is my addBST to make sure we get a balanced tree
+            Scanner r = new Scanner(file);
+            String[] dict = new String[length];
+            int i = 0; 
+            while(r.hasNext() && i < length){
+                if(r.nextLine().length() == 0){
+                    dict[i++] = r.nextLine().toLowerCase(); 
+                }
+            }
+            addBST(dict);
+            r.close();
                 sc.close();
             }
             catch(FileNotFoundException a){
@@ -53,6 +79,21 @@ public class AutoCorrect {
             }
         }
         
+    }
+
+    //this function is to make sure we don't get a degenerate tree
+    public static void addBST(String[] dict){
+        if(dict.length > 1){
+            int mid = dict.length/2; 
+            st.insert(dict[mid]);
+            String[] left = Arrays.copyOfRange(dict,0, mid);
+            String[] right = Arrays.copyOfRange(dict,mid+1, dict.length);
+            addBST(left);
+            addBST(right);
+        }
+        if(dict.length == 1){
+            st.insert(dict[0]);
+        }
     }
 
       
